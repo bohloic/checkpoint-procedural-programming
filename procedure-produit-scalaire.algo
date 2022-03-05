@@ -1,0 +1,59 @@
+// Procedure qui détermine si 2 vecteurs sont orthogonaux
+PROCEDURE dot_product(v1,v2 : ARRAY_OF FLOAT[2])
+VAR
+    ps: FLOAT :=0;
+    i,j: INTEGER;
+BEGIN
+    // Déterminons le produit scalaire
+    FOR i FROM 0 TO v1.length-1 DO
+        FOR j FROM v2.length-1 TO 0 DO
+            IF (v1[i] <> v2[j]) THEN
+                ps := ps + (v1[i]*v2[j]);
+            END_IF
+        END_FOR
+    END_FOR
+    // Affichons les resultats
+    write("le produit scalaire est : ",ps);
+    IF (ps = 0) THEN
+        write("les deux vecteurs sont orthogonaux");
+    ELSE
+        write("les deux vecteurs ne sont pas orthogonaux");
+    END_IF
+END
+
+// Algorithm principal
+ALGORITHM produitScalaire
+VAR
+    i, j, n : INTEGER;
+    vect :	STRUCT
+                v1 : ARRAY_OF FLOAT[2];
+                v2 : ARRAY_OF FLOAT[2];
+                next : ^vect;
+            END_STRUCT
+    v : ^vect := null;
+    first : ^vect := null;
+BEGIN
+    // initialisons du nombre de couple de vecteurs
+    write("Veuillez entrer le nombre de couple");
+    read(n);
+    // remplissage de chaque couple de vecteurs
+    FOR i FROM 0 TO n-1 DO
+        v := create(vect);
+        write("Entrer les valeurs pour le vecteur V1");
+        FOR j FROM 0 TO v1.length-1 DO
+            read(v^.v1[j]);
+        END_FOR
+        write("Entrer les valeurs pour le vecteur V2");
+        FOR j FROM 0 TO v2.length-1 DO
+            read(v^.v2[j]);
+        END_FOR
+        v^.next := first;
+        first := v;
+    END_FOR
+    // Appel de la procedure 
+    FOR i FROM 0 TO n-1 DO
+        dot_product(v^.v1,v^.v2); 
+        v^.next := first;
+        first := v;
+    END_FOR
+END
